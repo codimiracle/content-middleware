@@ -1,7 +1,7 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
 import com.codimiracle.web.middleware.content.contract.AbstractService;
-import com.codimiracle.web.middleware.content.inflation.UserInflater;
+import com.codimiracle.web.middleware.content.inflation.SocialUserInflater;
 import com.codimiracle.web.middleware.content.mapper.ContentMapper;
 import com.codimiracle.web.middleware.content.pojo.po.Content;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentRateVO;
@@ -31,7 +31,7 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
     @Resource
     private ContentTagsService tagsService;
     @Autowired(required = false)
-    private UserInflater userInflater;
+    private SocialUserInflater socialUserInflater;
 
     @Override
     public void save(Content model) {
@@ -63,8 +63,8 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
             }
             inflatedObject.setRateList(rateList);
             inflatedObject.setTagList(tagsService.findTagByContentId(inflatedObject.getId()));
-            if (Objects.nonNull(userInflater)) {
-                userInflater.inflate(inflatedObject);
+            if (Objects.nonNull(socialUserInflater)) {
+                socialUserInflater.inflate(inflatedObject);
             } else {
                 log.warn("user inflater bean is not found, null will be used.");
             }

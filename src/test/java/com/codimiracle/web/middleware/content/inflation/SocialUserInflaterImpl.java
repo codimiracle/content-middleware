@@ -4,7 +4,7 @@ import com.codimiracle.web.middleware.content.service.UserService;
 import lombok.Data;
 
 @Data
-public class UserInflaterImpl implements UserInflater {
+public class SocialUserInflaterImpl implements SocialUserInflater {
     private UserService userService;
 
     @Override
