@@ -1,0 +1,65 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.RateMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.ContentRate">
+        <id column="id" property="id"/>
+        <result column="content_id" property="contentId"/>
+        <result column="type" property="type"/>
+        <result property="rate" column="rate"/>
+        <result property="rateAvg" column="rate_avg"/>
+        <result property="rateSum" column="rate_sum"/>
+        <result property="rateCount" column="rate_count"/>
+    </resultMap>
+
+    <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentRateVO">
+        <id column="rate_id" property="id"/>
+        <result column="rate_content_id" property="contentId"/>
+        <result column="rate_type" property="type"/>
+        <result column="rate" property="rate"/>
+        <result column="rate_avg" property="rateAvg"/>
+        <result column="rate_sum" property="rateSum"/>
+        <result column="rate_count" property="rateCount"/>
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+        cr.id id,
+        cr.content_id,
+        cr.rate,
+        cr.rate_avg,
+        cr.rate_sum,
+        cr.rate_count
+        FROM content_rate cr
+        WHERE 1 = 1
+    </sql>
+
+    <update id="updateStatistics">
+        UPDATE content_rate cr SET
+        <if test="rate gt 0">
+            cr.rate = (cr.rate + #{rate}) / 2,
+            cr.rate_count = cr.rate_count + 1,
+            cr.rate_sum = cr.rate_sum + #{rate},
+            cr.rate_avg = (cr.rate_avg + #{rate}) / 2
+        </if>
+        <if test="rate lt 0">
+            cr.rate = (cr.rate * 2 - #{rate}),
+            cr.rate_count = cr.rate_count - 1,
+            cr.rate_sum = cr.rate_sum - #{rate},
+            cr.rate_avg = (cr.rate_avg * 2 - #{rate})
+        </if>
+        WHERE cr.id = #{rateId}
+    </update>
+    <select id="selectByContentIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement"/>
+        AND cr.content_id = #{contentId}
+    </select>
+    <select id="selectByIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement"/>
+        AND cr.id = #{id}
+    </select>
+
+    <select id="selectAllIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement"/>
+    </select>
+</mapper>

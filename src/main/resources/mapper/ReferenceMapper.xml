@@ -1,0 +1,40 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.ReferenceMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.ContentReference">
+        <id property="id" column="id" />
+        <result property="contentId" column="content_id" />
+        <result property="deleted" column="deleted" />
+        <result property="deletedAt" column="deleted_at" />
+        <result property="referencedAt" column="referenced_at" />
+        <result property="referenceTargetId" column="reference_target_id" />
+        <result property="referenceTargetType" column="reference_target_type" />
+    </resultMap>
+
+    <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentReferenceVO">
+        <id property="id" column="reference_id" />
+        <result property="contentId" column="content_id" />
+        <result property="referencedAt" column="reference_referenced_at" />
+        <result property="referenceTargetId" column="reference_target_id" />
+        <result property="referenceTargetType" column="reference_target_type" />
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+            cr.id reference_id,
+            cr.reference_target_type,
+            cr.reference_target_id,
+            cr.content_id,
+            cr.deleted reference_deleted,
+            cr.referenced_at reference_referenced_at,
+            cr.deleted_at reference_deleted_at
+        FROM
+            content_reference cr
+        WHERE cr.deleted = 0
+    </sql>
+    <select id="selectByContentIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND cr.content_id = #{contentId}
+    </select>
+</mapper>

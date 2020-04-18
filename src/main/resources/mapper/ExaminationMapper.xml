@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.ExaminationMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.ContentExamination">
+        <id property="id" column="id"/>
+        <result property="targetContentId" column="target_content_id"/>
+        <result property="examinedAt" column="examine_at"/>
+        <result property="examinerId" column="examiner_id"/>
+        <result property="fromStatus" column="from_status"/>
+        <result property="toStatus" column="toStatus"/>
+        <result property="reason" column="reason"/>
+        <result property="revoked" column="revoked"/>
+        <result property="revokedAt" column="revoked_at"/>
+    </resultMap>
+
+    <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentExaminationVO">
+        <id property="id" column="examination_id"/>
+        <result property="targetContentId" column="examination_target_content_id"/>
+        <result property="examinedAt" column="examination_examined_at"/>
+        <result property="examinerId" column="examination_examiner_id"/>
+        <result property="fromStatus" column="examination_from_status"/>
+        <result property="toStatus" column="examination_to_status"/>
+        <result property="reason" column="examination_reason"/>
+        <result property="revoked" column="examination_revoked"/>
+        <result property="revokedAt" column="examination_revoked_at"/>
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+            ce.id examination_id,
+            ce.target_content_id examination_target_content_id,
+            ce.examined_at examination_examined_at,
+            ce.examiner_id examination_examiner_id,
+            ce.from_status examination_from_status,
+            ce.to_status examination_to_status,
+            ce.reason examination_reason,
+            ce.revoked examination_revoked,
+            ce.revoked_at examination_revoked_at
+        FROM content_examination ce
+        WHERE 1 = 1
+    </sql>
+
+    <select id="selectLastByContentId" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND ce.target_content_id = #{contentId}
+        ORDER BY ce.examined_at DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectByIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND ce.id = #{id}
+    </select>
+
+    <select id="selectAllIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+
+    </select>
+</mapper>

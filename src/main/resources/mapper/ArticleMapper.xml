@@ -1,0 +1,60 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.ArticleMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.ContentArticle">
+        <result column="content_id" property="contentId" />
+        <result column="target_content_id" property="targetContentId" />
+        <result column="article_type" property="articleType" />
+        <result column="article_source" property="articleSource" />
+        <result column="status" property="status" />
+        <result column="title" property="title" />
+        <result column="words" property="words" />
+    </resultMap>
+
+    <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentArticleVO" extends="com.codimiracle.web.middleware.content.mapper.ContentMapper.ValueResultMap">
+        <result column="article_content_id" property="contentId" />
+        <result column="article_target_content_id" property="targetContentId" />
+        <result column="article_status" property="status" />
+        <result column="article_title" property="title" />
+        <result column="article_words" property="words" />
+        <association property="article" javaType="com.codimiracle.web.middleware.content.pojo.eo.ArticleSource">
+            <result column="article_type" property="type" />
+            <result column="article_source" property="source" />
+        </association>
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+            ca.content_id article_content_id,
+            ca.target_content_id article_target_content_id,
+            ca.article_type article_type,
+            ca.article_source article_source,
+            ca.status article_status,
+            ca.title article_title,
+            ca.words article_words,
+
+            c.id content_id,
+            c.type content_type,
+            c.owner_id content_owner_id,
+            c.comments content_comments,
+            c.created_at content_created_at,
+            c.updated_at content_updated_at,
+            c.likes content_likes,
+            c.reposts content_reposts,
+            c.dislikes content_dislikes
+        FROM content_article ca
+            LEFT JOIN content c ON c.id = ca.content_id
+        WHERE c.deleted = 0
+    </sql>
+
+    <select id="selectByIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND c.id = #{id}
+    </select>
+
+    <select id="selectAllIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+
+    </select>
+</mapper>

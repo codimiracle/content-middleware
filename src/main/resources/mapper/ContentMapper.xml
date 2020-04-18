@@ -1,0 +1,69 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.ContentMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.Content">
+        <id column="id" property="id"/>
+        <result column="type" property="type"/>
+        <result column="deleted" property="deleted"/>
+        <result column="deleted_at" property="deletedAt"/>
+        <result column="owner_id" property="ownerId"/>
+        <result column="comments" property="comments"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+        <result column="likes" property="likes"/>
+        <result column="dislikes" property="dislikes"/>
+        <result column="reposts" property="reposts"/>
+    </resultMap>
+    <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentVO">
+        <id column="content_id" property="id"/>
+        <result column="content_type" property="type"/>
+        <result column="content_owner_id" property="ownerId"/>
+        <result column="content_comments" property="comments"/>
+        <result column="content_created_at" property="createdAt"/>
+        <result column="content_updated_at" property="updatedAt"/>
+        <result column="content_likes" property="likes"/>
+        <result column="content_reposts" property="reposts"/>
+        <result column="content_dislikes" property="dislikes"/>
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+            c.id content_id,
+            c.type content_type,
+            c.owner_id content_owner_id,
+            c.comments content_comments,
+            c.created_at content_created_at,
+            c.updated_at content_updated_at,
+            c.likes content_likes,
+            c.dislikes content_dislikes,
+            c.reposts content_reposts,
+        FROM content c WHERE c.deleted = 0
+    </sql>
+    <update id="updateStatistics">
+        UPDATE content c
+        <if test="field == 'comments'">
+            SET c.comments = c.comments + #{increment}
+        </if>
+        <if test="field == 'reposts'">
+            SET c.reposts = c.reposts + #{increment}
+        </if>
+        <if test="field == 'likes'">
+            SET c.likes = c.likes + #{increment}
+        </if>
+        <if test="field == 'dislikes'">
+            SET c.dislikes = c.dislikes + #{increment}
+        </if>
+        WHERE c.id = #{contentId}
+    </update>
+
+    <select id="selectByIdIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND c.id = #{id}
+    </select>
+
+    <select id="selectAllIntegrally" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+    </select>
+
+</mapper>

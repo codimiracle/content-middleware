@@ -1,0 +1,28 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.codimiracle.web.middleware.content.mapper.ContentTagsMapper">
+    <resultMap id="PersistentResultMap" type="com.codimiracle.web.middleware.content.pojo.po.ContentTag">
+        <id property="id" column="id"/>
+        <result property="deletedAt" column="deleted_at"/>
+        <result property="deleted" column="deleted"/>
+        <result property="contentId" column="content_id"/>
+        <result property="tagId" column="tag_id"/>
+    </resultMap>
+
+    <sql id="select_statement">
+        SELECT
+            ct.id,
+            ct.deleted_at,
+            ct.deleted,
+            ct.content_id,
+            ct.tag_id
+        FROM content_tags ct
+        WHERE ct.deleted = 0
+    </sql>
+
+    <select id="selectByContentId" resultMap="PersistentResultMap">
+        <include refid="select_statement" />
+        AND ct.content_id = #{contentId}
+    </select>
+</mapper>
