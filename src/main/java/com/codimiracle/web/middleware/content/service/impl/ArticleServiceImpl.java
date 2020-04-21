@@ -1,5 +1,7 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
+import com.codimiracle.web.basic.contract.Page;
+import com.codimiracle.web.basic.contract.PageSlice;
 import com.codimiracle.web.middleware.content.contract.AbstractService;
 import com.codimiracle.web.middleware.content.mapper.ArticleMapper;
 import com.codimiracle.web.middleware.content.pojo.eo.LoggedUser;
@@ -8,13 +10,12 @@ import com.codimiracle.web.middleware.content.pojo.po.ContentArticle;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentArticleVO;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentVO;
 import com.codimiracle.web.middleware.content.service.*;
-import com.codimiracle.web.response.contract.Page;
-import com.codimiracle.web.response.contract.PageSlice;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -119,5 +120,22 @@ public class ArticleServiceImpl extends AbstractService<String, ContentArticle, 
             }
         }
         return inflatedObject;
+    }
+
+    @Override
+    public List<ContentArticle> findByTargetContentId(String targetContentId) {
+        Condition condition = new Condition(ContentArticle.class);
+        condition.createCriteria()
+                .andEqualTo("targetContentId", targetContentId);
+        List<ContentArticle> articles = findByCondition(condition);
+        articles.forEach(this::virtualJoin);
+        return articles;
+    }
+
+    @Override
+    public List<ContentArticleVO> findByTargetContentIdIntegrally(String targetContentId) {
+        List<ContentArticleVO> articleList = articleMapper.selectByTargetContentId(targetContentId);
+        articleList.forEach(this::mutate);
+        return articleList;
     }
 }

@@ -1,13 +1,13 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
+import com.codimiracle.web.basic.contract.Page;
+import com.codimiracle.web.basic.contract.PageSlice;
 import com.codimiracle.web.middleware.content.TestWithBeans;
 import com.codimiracle.web.middleware.content.mapper.ArticleMapper;
 import com.codimiracle.web.middleware.content.pojo.po.ContentArticle;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentArticleVO;
 import com.codimiracle.web.middleware.content.service.ArticleService;
 import com.codimiracle.web.mybatis.contract.Paginator;
-import com.codimiracle.web.response.contract.Page;
-import com.codimiracle.web.response.contract.PageSlice;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -145,4 +145,26 @@ class ArticleServiceImplTest {
         assertNotNull(result.getComments());
     }
 
+    @Test
+    void findByTargetContentId() {
+        for (int i = 0; i < 30; i++) {
+            ContentArticle article = new ContentArticle();
+            article.setTargetContentId("4445454");
+            articleService.save(article);
+        }
+        List<ContentArticle> byTargetContentId = articleService.findByTargetContentId("4445454");
+        assertEquals(30, byTargetContentId.size());
+    }
+
+    @Test
+    void findByTargetContentIdIntegrally() {
+        for (int i = 0; i < 30; i++) {
+            ContentArticle article = new ContentArticle();
+            article.setTargetContentId("44454547");
+            articleService.save(article);
+        }
+        List<ContentArticleVO> byTargetContentId = articleService.findByTargetContentIdIntegrally("44454547");
+        assertEquals(30, byTargetContentId.size());
+
+    }
 }
