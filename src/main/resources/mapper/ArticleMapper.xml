@@ -57,4 +57,8 @@
         <include refid="select_statement" />
 
     </select>
+    <select id="selectByTargetContentId" resultMap="ValueResultMap">
+        <include refid="select_statement" />
+        AND ca.target_content_id = #{targetContentId}
+    </select>
 </mapper>
