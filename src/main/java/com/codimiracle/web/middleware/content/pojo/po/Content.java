@@ -3,7 +3,6 @@ package com.codimiracle.web.middleware.content.pojo.po;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDelete;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDeletedDate;
 import lombok.Data;
-import org.apache.ibatis.type.Alias;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -11,6 +10,8 @@ import java.util.Date;
 @Data
 @Table(name = "content")
 public class Content {
+    public static final String CONTENT_TYPE_COMMENT = "comment";
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
