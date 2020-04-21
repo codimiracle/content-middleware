@@ -1,6 +1,7 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
 import com.codimiracle.web.middleware.content.TestWithBeans;
+import com.codimiracle.web.middleware.content.extension.ExaminatedPostProcessor;
 import com.codimiracle.web.middleware.content.pojo.po.ContentArticle;
 import com.codimiracle.web.middleware.content.pojo.po.ContentExamination;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentExaminationVO;
@@ -89,5 +90,36 @@ class ExaminationServiceImplTest {
         ContentExaminationVO examinationVO = examinationService.findLastByContentIdIntegrally(article.getContentId());
         assertEquals(ContentArticle.CONTENT_STATUS_REJECTED, examinationVO.getToStatus());
         assertEquals("Testing reject", examinationVO.getReason());
+    }
+
+    @Test
+    void testPostProcessorAdd() {
+        final boolean[] ran = {false};
+        examinationService.addPostProcessor(new ExaminatedPostProcessor() {
+            @Override
+            public void onExaminated(ContentArticle article, String fromStatus, String toStatus) {
+                ran[0] = true;
+            }
+        });
+        ContentArticle article = new ContentArticle();
+        article.setArticleType("html");
+        article.setArticleSource("<p>Hello world</p>");
+        articleService.save(article);
+        examinationService.reject(article.getId(), "1", "Testing reject");
+        assertTrue(ran[0]);
+    }
+
+    @Test
+    void testPostProcessor() {
+        final boolean[] ran = {false};
+        ExaminatedPostProcessor processor = (article, fromStatus, toStatus) -> ran[0] = true;
+        examinationService.addPostProcessor(processor);
+        examinationService.removePostProcessor(processor);
+        ContentArticle article = new ContentArticle();
+        article.setArticleType("html");
+        article.setArticleSource("<p>Hello world</p>");
+        articleService.save(article);
+        examinationService.reject(article.getId(), "1", "Testing reject");
+        assertFalse(ran[0]);
     }
 }
