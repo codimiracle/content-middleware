@@ -37,7 +37,7 @@
             c.updated_at content_updated_at,
             c.likes content_likes,
             c.dislikes content_dislikes,
-            c.reposts content_reposts,
+            c.reposts content_reposts
         FROM content c WHERE c.deleted = 0
     </sql>
     <update id="updateStatistics">
