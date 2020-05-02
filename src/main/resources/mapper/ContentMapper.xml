@@ -17,6 +17,7 @@
     </resultMap>
     <resultMap id="ValueResultMap" type="com.codimiracle.web.middleware.content.pojo.vo.ContentVO">
         <id column="content_id" property="id"/>
+        <result column="content_id" property="contentId"/>
         <result column="content_type" property="type"/>
         <result column="content_owner_id" property="ownerId"/>
         <result column="content_comments" property="comments"/>

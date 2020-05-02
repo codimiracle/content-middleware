@@ -68,6 +68,7 @@ class ContentServiceImplTest {
         content.setType("text-content");
         contentService.save(content);
         ContentVO vo = ((ContentServiceImpl) contentService).mutate(contentService.findByIdIntegrally(content.getId()));
+        assertNotNull(vo.getContentId());
         assertNotNull(vo.getOwner());
         assertNotNull(vo.getRateList());
         assertNotNull(vo.getTagList());

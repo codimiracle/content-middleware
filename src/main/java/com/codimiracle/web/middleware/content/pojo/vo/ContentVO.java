@@ -12,6 +12,7 @@ import java.util.List;
 @Data
 public class ContentVO implements ReferenceTarget, SocialUserInflatable {
     private String id;
+    private String contentId;
     private String type;
     private String ownerId;
     private Long comments;
