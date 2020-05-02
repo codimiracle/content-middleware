@@ -1,9 +1,6 @@
 package com.codimiracle.web.middleware.content;
 
-import com.codimiracle.web.middleware.content.inflation.TagInflater;
-import com.codimiracle.web.middleware.content.inflation.TagInflaterImpl;
-import com.codimiracle.web.middleware.content.inflation.SocialUserInflater;
-import com.codimiracle.web.middleware.content.inflation.SocialUserInflaterImpl;
+import com.codimiracle.web.middleware.content.inflation.*;
 import com.codimiracle.web.middleware.content.pojo.eo.LoggedUser;
 import com.codimiracle.web.middleware.content.pojo.eo.LoggedUserHolder;
 import com.codimiracle.web.middleware.content.service.UserService;
@@ -37,6 +34,10 @@ public class TestWithBeans {
         SocialUserInflaterImpl userInflater = new SocialUserInflaterImpl();
         userInflater.setUserService(userService);
         return userInflater;
+    }
+    @Bean
+    FollowingUserInflater followingUserInflater() {
+        return new FollowingUserInflaterImpl();
     }
 
     @Bean

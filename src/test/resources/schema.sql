@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2020-04-17 23:15:45
+Date: 2020-05-02 13:38:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -32,7 +32,7 @@ CREATE TABLE `content` (
   `updated_at` datetime DEFAULT NULL COMMENT '更新时间',
   `deleted_at` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Table structure for content_article
@@ -132,5 +132,20 @@ CREATE TABLE `content_tags` (
   `tag_id` int(11) DEFAULT NULL COMMENT '标签Id',
   `deleted` tinyint(1) DEFAULT '0' COMMENT '删除标识',
   `deleted_at` varchar(255) DEFAULT NULL COMMENT '删除时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for following
+-- ----------------------------
+DROP TABLE IF EXISTS `following`;
+CREATE TABLE `following` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `follower_id` int(11) DEFAULT NULL,
+  `following_user_id` int(11) DEFAULT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `deleted` tinyint(4) DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
