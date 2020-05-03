@@ -2,7 +2,7 @@ package com.codimiracle.web.middleware.content.service.impl;
 
 import com.codimiracle.web.basic.contract.Page;
 import com.codimiracle.web.basic.contract.PageSlice;
-import com.codimiracle.web.middleware.content.contract.AbstractService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import com.codimiracle.web.middleware.content.mapper.ArticleMapper;
 import com.codimiracle.web.middleware.content.pojo.eo.LoggedUser;
 import com.codimiracle.web.middleware.content.pojo.po.Content;

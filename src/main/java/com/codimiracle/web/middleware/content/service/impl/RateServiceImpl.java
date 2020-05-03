@@ -1,6 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.middleware.content.contract.AbstractService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import com.codimiracle.web.middleware.content.mapper.RateMapper;
 import com.codimiracle.web.middleware.content.pojo.po.ContentRate;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentRateVO;

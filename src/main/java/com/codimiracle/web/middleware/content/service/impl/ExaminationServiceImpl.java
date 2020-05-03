@@ -1,6 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.middleware.content.contract.AbstractService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import com.codimiracle.web.middleware.content.extension.ExaminatedPostProcessor;
 import com.codimiracle.web.middleware.content.inflation.ExaminerInflater;
 import com.codimiracle.web.middleware.content.mapper.ExaminationMapper;

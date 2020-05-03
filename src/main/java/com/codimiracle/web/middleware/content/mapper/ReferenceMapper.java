@@ -1,6 +1,6 @@
 package com.codimiracle.web.middleware.content.mapper;
 
-import com.codimiracle.web.middleware.content.contract.Mapper;
+import com.codimiracle.web.mybatis.contract.support.vo.Mapper;
 import com.codimiracle.web.middleware.content.pojo.po.ContentArticle;
 import com.codimiracle.web.middleware.content.pojo.po.ContentReference;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentReferenceVO;

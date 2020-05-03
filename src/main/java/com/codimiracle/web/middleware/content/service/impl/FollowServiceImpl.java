@@ -1,6 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.middleware.content.contract.AbstractService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import com.codimiracle.web.middleware.content.inflation.FollowingUserInflater;
 import com.codimiracle.web.middleware.content.inflation.SocialUserInflater;
 import com.codimiracle.web.middleware.content.mapper.FollowMapper;
