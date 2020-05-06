@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@Table(name = "content_examination")
 public class ContentExamination {
     @Id
     @Column(name = "id")

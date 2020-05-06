@@ -1,12 +1,12 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
+import com.codimiracle.web.middleware.content.inflation.FollowerInflater;
 import com.codimiracle.web.middleware.content.inflation.FollowingUserInflater;
-import com.codimiracle.web.middleware.content.inflation.SocialUserInflater;
 import com.codimiracle.web.middleware.content.mapper.FollowMapper;
 import com.codimiracle.web.middleware.content.pojo.po.Following;
 import com.codimiracle.web.middleware.content.pojo.vo.FollowingVO;
 import com.codimiracle.web.middleware.content.service.FollowService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,15 +26,15 @@ public class FollowServiceImpl extends AbstractService<String, Following, Follow
     @Autowired(required = false)
     private FollowingUserInflater followingUserInflater;
     @Autowired(required = false)
-    private SocialUserInflater socialUserInflater;
+    private FollowerInflater followerInflater;
 
     @Resource
     private FollowMapper followMapper;
 
     @Override
     protected FollowingVO mutate(FollowingVO inflatedObject) {
-        if (Objects.nonNull(socialUserInflater)) {
-            socialUserInflater.inflate(inflatedObject);
+        if (Objects.nonNull(followingUserInflater)) {
+            followerInflater.inflate(inflatedObject);
         } else {
             log.warn("social user inflater bean is not found, null will be used");
         }

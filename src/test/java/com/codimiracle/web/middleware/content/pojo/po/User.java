@@ -10,11 +10,6 @@ public class User implements MentionUser, SocialUser {
     private String name;
 
     @Override
-    public void setMentionUserId(String userId) {
-        this.setId(userId);
-    }
-
-    @Override
     public String getMentionUserId() {
         return this.getId();
     }

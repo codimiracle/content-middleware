@@ -1,8 +1,8 @@
 package com.codimiracle.web.middleware.content.pojo.vo;
 
+import com.codimiracle.web.middleware.content.inflation.OwnerInflatable;
 import com.codimiracle.web.middleware.content.pojo.eo.ReferenceTarget;
 import com.codimiracle.web.middleware.content.pojo.eo.SocialUser;
-import com.codimiracle.web.middleware.content.inflation.SocialUserInflatable;
 import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class ContentVO implements ReferenceTarget, SocialUserInflatable {
+public class ContentVO implements ReferenceTarget, OwnerInflatable {
     private String id;
     private String contentId;
     private String type;
@@ -32,21 +32,6 @@ public class ContentVO implements ReferenceTarget, SocialUserInflatable {
 
     private Date createdAt;
     private Date updatedAt;
-
-    @Override
-    public String getUserId() {
-        return this.ownerId;
-    }
-
-    @Override
-    public void setSocialUser(SocialUser user) {
-        this.setOwner(user);
-    }
-
-    @Override
-    public SocialUser getSocialUser() {
-        return this.getOwner();
-    }
 
     @Override
     public String getReferenceTargetId() {

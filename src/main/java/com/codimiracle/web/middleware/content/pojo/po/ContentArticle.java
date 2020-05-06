@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Table(name = "content_article")
 public class ContentArticle {
     public static final String CONTENT_STATUS_DRAFT = "draft";
     public static final String CONTENT_STATUS_EXAMINING = "examining";

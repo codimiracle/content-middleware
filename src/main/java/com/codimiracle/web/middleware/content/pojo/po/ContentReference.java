@@ -2,13 +2,11 @@ package com.codimiracle.web.middleware.content.pojo.po;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Data
+@Table(name = "content_reference")
 public class ContentReference {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

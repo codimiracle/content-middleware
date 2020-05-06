@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.codimiracle.web.middleware</groupId>
 	<artifactId>content-middleware</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<version>0.2.1-SNAPSHOT</version>
 	<name>content-middleware</name>
 	<description>Content middleware for Spring Boot</description>
 

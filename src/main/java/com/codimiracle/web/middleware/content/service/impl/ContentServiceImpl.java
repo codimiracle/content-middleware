@@ -1,7 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
-import com.codimiracle.web.middleware.content.inflation.SocialUserInflater;
+import com.codimiracle.web.middleware.content.inflation.OwnerInflater;
 import com.codimiracle.web.middleware.content.mapper.ContentMapper;
 import com.codimiracle.web.middleware.content.pojo.po.Content;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentRateVO;
@@ -9,6 +8,7 @@ import com.codimiracle.web.middleware.content.pojo.vo.ContentVO;
 import com.codimiracle.web.middleware.content.service.ContentService;
 import com.codimiracle.web.middleware.content.service.ContentTagsService;
 import com.codimiracle.web.middleware.content.service.RateService;
+import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
     @Resource
     private ContentTagsService tagsService;
     @Autowired(required = false)
-    private SocialUserInflater socialUserInflater;
+    private OwnerInflater ownerInflater;
 
     @Override
     public void save(Content model) {
@@ -63,8 +63,8 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
             }
             inflatedObject.setRateList(rateList);
             inflatedObject.setTagList(tagsService.findTagByContentId(inflatedObject.getId()));
-            if (Objects.nonNull(socialUserInflater)) {
-                socialUserInflater.inflate(inflatedObject);
+            if (Objects.nonNull(ownerInflater)) {
+                ownerInflater.inflate(inflatedObject);
             } else {
                 log.warn("user inflater bean is not found, null will be used.");
             }

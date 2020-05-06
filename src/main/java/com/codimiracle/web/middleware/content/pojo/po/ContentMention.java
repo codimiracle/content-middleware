@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 
 @Data
+@Table(name = "content_mention")
 public class ContentMention implements MentionUserInflatable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -30,8 +30,14 @@ public class TestWithBeans {
     }
 
     @Bean
-    SocialUserInflater getUserInflater(UserService userService) {
-        SocialUserInflaterImpl userInflater = new SocialUserInflaterImpl();
+    OwnerInflater ownerInflater(UserService userService) {
+        OwnerInflaterImpl ownerInflater = new OwnerInflaterImpl();
+        ownerInflater.setUserService(userService);
+        return ownerInflater;
+    }
+    @Bean
+    FollowerInflater followerInflater(UserService userService) {
+        FollowerInflaterImpl userInflater = new FollowerInflaterImpl();
         userInflater.setUserService(userService);
         return userInflater;
     }

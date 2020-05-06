@@ -1,5 +1,6 @@
 package com.codimiracle.web.middleware.content.pojo.po;
 
+import javax.persistence.Table;
 import java.util.Objects;
 
 public class Comment extends ContentArticle {
