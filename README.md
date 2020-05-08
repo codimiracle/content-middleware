@@ -16,8 +16,10 @@ the middleware provides some useful content service implementation for content-b
 * MentionService
 * LikeService
 * ExaminationService
+* FollowService
+
 # Usage
-1. include content-middleware in `pom.xml` (see [Maven Section](#Maven))
+1. includes content-middleware in `pom.xml` (see [Maven Section](#Maven))
 2. register beans with `@ComponentScan`:
     
      ```java
@@ -25,12 +27,17 @@ the middleware provides some useful content service implementation for content-b
      ```
 
 3. implements inflaters
+   
+   if you using vo convenience, you will be implement those inflater for getting an entire object.
+   
+   * ExaminerInflater
+   * MentionUserInflater
+   * ReferenceTargetInflater
+   * OwnerInflater
+   * FollowingUserInflater
+   * FollowerInflater
+   * TagInflater
     
-    * ExaminerInflater
-    * MentionUserInflater
-    * ReferenceTargetInflater
-    * SocialUserInflater
-    * TagInflater
 ## Maven
 (notes: doesn't publish to maven central yet)
 ```xml
