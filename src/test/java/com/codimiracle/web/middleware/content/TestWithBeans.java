@@ -47,7 +47,7 @@ public class TestWithBeans {
     }
 
     @Bean
-    TagInflater getTagInFlater() {
-        return new TagInflaterImpl();
+    ContentTagInflater getTagInflater() {
+        return new ContentTagInflaterImpl();
     }
 }

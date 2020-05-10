@@ -1,6 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
-import com.codimiracle.web.middleware.content.inflation.TagInflater;
+import com.codimiracle.web.middleware.content.inflation.ContentTagInflater;
 import com.codimiracle.web.middleware.content.mapper.ContentTagsMapper;
 import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import com.codimiracle.web.middleware.content.pojo.po.ContentTag;
@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -25,7 +24,7 @@ public class ContentTagsServiceImpl extends AbstractService<String, ContentTag> 
     private ContentTagsMapper tagsMapper;
 
     @Autowired(required = false)
-    private TagInflater tagInflater;
+    private ContentTagInflater contentTagInflater;
 
     @Override
     public void save(List<ContentTag> models) {
@@ -38,11 +37,11 @@ public class ContentTagsServiceImpl extends AbstractService<String, ContentTag> 
     @Override
     public List<ContentTag> findByContentId(String contentId) {
         List<ContentTag> contentTags = tagsMapper.selectByContentId(contentId);
-        if (Objects.isNull(tagInflater)) {
+        if (Objects.isNull(contentTagInflater)) {
             log.warn("tag inflater is not found, null will be used.");
             return contentTags;
         }
-        contentTags.forEach(contentTag -> tagInflater.inflate(contentTag));
+        contentTags.forEach(contentTag -> contentTagInflater.inflate(contentTag));
         return contentTags;
     }
 
