@@ -4,7 +4,9 @@ import com.codimiracle.web.middleware.content.inflation.ContentTagInflatable;
 import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDelete;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDeletedDate;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Date;

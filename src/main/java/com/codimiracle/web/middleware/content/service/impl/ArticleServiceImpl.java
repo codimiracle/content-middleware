@@ -123,6 +123,16 @@ public class ArticleServiceImpl extends AbstractService<String, ContentArticle, 
     }
 
     @Override
+    public ContentArticleVO inflate(ContentArticleVO contentArticleVO) {
+        return mutate(contentArticleVO);
+    }
+
+    @Override
+    public PageSlice<ContentArticleVO> inflate(PageSlice<ContentArticleVO> slice) {
+        return mutate(slice);
+    }
+
+    @Override
     public List<ContentArticle> findByTargetContentId(String targetContentId) {
         Condition condition = new Condition(ContentArticle.class);
         condition.createCriteria()

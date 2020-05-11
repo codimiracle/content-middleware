@@ -1,8 +1,10 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
+import com.codimiracle.web.basic.contract.PageSlice;
 import com.codimiracle.web.middleware.content.inflation.OwnerInflater;
 import com.codimiracle.web.middleware.content.mapper.ContentMapper;
 import com.codimiracle.web.middleware.content.pojo.po.Content;
+import com.codimiracle.web.middleware.content.pojo.po.ContentTag;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentRateVO;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentVO;
 import com.codimiracle.web.middleware.content.service.ContentService;
@@ -18,6 +20,8 @@ import javax.annotation.Resource;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional
@@ -29,15 +33,27 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
     @Resource
     private RateService rateService;
     @Resource
-    private ContentTagsService tagsService;
+    private ContentTagsService contentTagsService;
     @Autowired(required = false)
     private OwnerInflater ownerInflater;
+
+    private void saveTagsListPart(Content content) {
+        Optional.ofNullable(content.getTagList()).ifPresent((tags -> {
+            contentTagsService.save(tags.stream().map(tag -> {
+                ContentTag contentTag = new ContentTag();
+                contentTag.setContentId(content.getId());
+                contentTag.setTag(tag);
+                return contentTag;
+            }).collect(Collectors.toList()));
+        }));
+    }
 
     @Override
     public void save(Content model) {
         model.setCreatedAt(new Date());
         model.setUpdatedAt(model.getCreatedAt());
         super.save(model);
+        saveTagsListPart(model);
     }
 
     @Override
@@ -52,6 +68,15 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
             content.setUpdatedAt(content.getCreatedAt());
         });
         super.save(models);
+        models.forEach((this::saveTagsListPart));
+    }
+
+    @Override
+    public void update(Content model) {
+        super.update(model);
+        Optional.ofNullable(model.getTagList()).ifPresent(tagList ->
+                contentTagsService.updateAttachingTags(model.getId(), tagList)
+        );
     }
 
     @Override
@@ -62,7 +87,7 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
                 inflatedObject.setRate(rateList.get(0));
             }
             inflatedObject.setRateList(rateList);
-            inflatedObject.setTagList(tagsService.findTagByContentId(inflatedObject.getId()));
+            inflatedObject.setTagList(contentTagsService.findTagByContentId(inflatedObject.getId()));
             if (Objects.nonNull(ownerInflater)) {
                 ownerInflater.inflate(inflatedObject);
             } else {
@@ -70,6 +95,16 @@ public class ContentServiceImpl extends AbstractService<String, Content, Content
             }
         }
         return inflatedObject;
+    }
+
+    @Override
+    public ContentVO inflate(ContentVO contentVO) {
+        return mutate(contentVO);
+    }
+
+    @Override
+    public PageSlice<ContentVO> inflate(PageSlice<ContentVO> slice) {
+        return mutate(slice);
     }
 
     @Override

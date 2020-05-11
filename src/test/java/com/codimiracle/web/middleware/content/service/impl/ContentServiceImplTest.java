@@ -1,6 +1,8 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
 import com.codimiracle.web.middleware.content.TestWithBeans;
+import com.codimiracle.web.middleware.content.pojo.eo.SimpleTag;
+import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import com.codimiracle.web.middleware.content.pojo.po.Content;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentVO;
 import com.codimiracle.web.middleware.content.service.ContentService;
@@ -8,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -63,11 +66,44 @@ class ContentServiceImplTest {
     }
 
     @Test
-    void mutate() {
+    void saveWithTags() {
+        final Content content = new Content();
+        final List<Tag> tagList = new ArrayList<>();
+        Tag tag = new SimpleTag("1", "Test1");
+        tagList.add(tag);
+        content.setTagList(tagList);
+        content.setType("test-content");
+        contentService.save(content);
+        ContentVO result = contentService.findByIdIntegrally(content.getId());
+        assertNotNull(result);
+        assertNotNull(result.getTagList());
+        assertTrue(result.getTagList().size() > 0);
+        Tag inflatedTag = result.getTagList().get(0);
+        assertEquals(tag.getTagId(), inflatedTag.getTagId());
+    }
+
+    @Test
+    void updateWithTags() {
+        final Content content = new Content();
+        final List<Tag> tagList = new ArrayList<>();
+        Tag tag = new SimpleTag("1", "Test1");
+        tagList.add(tag);
+        content.setTagList(tagList);
+        content.setType("test-content");
+        contentService.save(content);
+        tagList.clear();
+        contentService.update(content);
+        ContentVO result = contentService.findByIdIntegrally(content.getId());
+        assertTrue(result.getTagList().isEmpty());
+    }
+
+
+    @Test
+    void inflate() {
         Content content = new Content();
         content.setType("text-content");
         contentService.save(content);
-        ContentVO vo = ((ContentServiceImpl) contentService).mutate(contentService.findByIdIntegrally(content.getId()));
+        ContentVO vo = contentService.inflate(contentService.findByIdIntegrally(content.getId()));
         assertNotNull(vo.getContentId());
         assertNotNull(vo.getOwner());
         assertNotNull(vo.getRateList());

@@ -1,5 +1,6 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
+import com.codimiracle.web.basic.contract.PageSlice;
 import com.codimiracle.web.mybatis.contract.support.vo.AbstractService;
 import com.codimiracle.web.middleware.content.inflation.ReferenceTargetInflater;
 import com.codimiracle.web.middleware.content.mapper.ReferenceMapper;
@@ -35,6 +36,16 @@ public class ReferenceServiceImpl extends AbstractService<String, ContentReferen
             log.warn("reference target inflater bean is not found, null will be used.");
         }
         return inflatedObject;
+    }
+
+    @Override
+    public ContentReferenceVO inflate(ContentReferenceVO inflatedObject) {
+        return mutate(inflatedObject);
+    }
+
+    @Override
+    public PageSlice<ContentReferenceVO> inflate(PageSlice<ContentReferenceVO> slice) {
+        return mutate(slice);
     }
 
     @Override

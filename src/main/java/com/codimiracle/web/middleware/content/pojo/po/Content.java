@@ -1,11 +1,13 @@
 package com.codimiracle.web.middleware.content.pojo.po;
 
+import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDelete;
 import com.codimiracle.web.mybatis.contract.annotation.LogicDeletedDate;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Table(name = "content")
@@ -40,4 +42,7 @@ public class Content {
     @LogicDeletedDate
     @Column(name = "deleted_at")
     private Date deletedAt;
+
+    @Transient
+    private List<Tag> tagList;
 }

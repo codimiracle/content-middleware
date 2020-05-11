@@ -8,6 +8,4 @@ import java.util.List;
 
 @org.apache.ibatis.annotations.Mapper
 public interface ContentTagsMapper extends Mapper<ContentTag> {
-    List<ContentTag> selectByContentId(String contentId);
-
 }

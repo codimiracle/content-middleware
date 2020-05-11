@@ -9,20 +9,4 @@
         <result property="contentId" column="content_id"/>
         <result property="tagId" column="tag_id"/>
     </resultMap>
-
-    <sql id="select_statement">
-        SELECT
-            ct.id,
-            ct.deleted_at,
-            ct.deleted,
-            ct.content_id,
-            ct.tag_id
-        FROM content_tags ct
-        WHERE ct.deleted = 0
-    </sql>
-
-    <select id="selectByContentId" resultMap="PersistentResultMap">
-        <include refid="select_statement" />
-        AND ct.content_id = #{contentId}
-    </select>
 </mapper>
