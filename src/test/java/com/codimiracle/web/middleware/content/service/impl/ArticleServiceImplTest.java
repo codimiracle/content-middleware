@@ -1,9 +1,11 @@
 package com.codimiracle.web.middleware.content.service.impl;
 
+import com.codimiracle.web.basic.contract.Filter;
 import com.codimiracle.web.basic.contract.Page;
 import com.codimiracle.web.basic.contract.PageSlice;
 import com.codimiracle.web.middleware.content.TestWithBeans;
 import com.codimiracle.web.middleware.content.mapper.ArticleMapper;
+import com.codimiracle.web.middleware.content.pojo.po.Content;
 import com.codimiracle.web.middleware.content.pojo.po.ContentArticle;
 import com.codimiracle.web.middleware.content.pojo.vo.ContentArticleVO;
 import com.codimiracle.web.middleware.content.service.ArticleService;
@@ -128,17 +130,26 @@ class ArticleServiceImplTest {
             ContentArticle article = new ContentArticle();
             article.setTitle("Hello world");
             article.setWords(0L);
+            if (i % 2 == 0) {
+                article.setType(Content.CONTENT_TYPE_COMMENT);
+            } else {
+                article.setType("other");
+            }
             article.setArticleType("html");
             article.setArticleSource(source);
             articleService.save(article);
         }
-        PageSlice<ContentArticleVO> slice = articleService.findAllIntegrally(null, null, new Page());
-        assertTrue(slice.getTotal() >= 20);
+        Filter filter = new Filter();
+        filter.put("type", new String[] {Content.CONTENT_TYPE_COMMENT});
+        PageSlice<ContentArticleVO> slice = articleService.findAllIntegrally(filter, null, new Page());
+        assertTrue(slice.getTotal() >= 10);
         ContentArticleVO result = slice.getList().get(slice.getList().size() - 1);
         assertNotNull(result.getId());
         assertNotNull(result.getContentId());
         assertNotNull(result.getMentionList());
         assertNotNull(result.getReferenceList());
+        assertEquals(Content.CONTENT_TYPE_COMMENT, result.getType());
+        assertEquals(Content.CONTENT_TYPE_COMMENT, slice.getList().get(slice.getList().size() - 2).getType());
         assertNotNull(result.getTitle());
         assertNotNull(result.getLikes());
         assertNotNull(result.getDislikes());
