@@ -88,6 +88,7 @@ public class ContentTagsServiceImpl extends AbstractService<String, ContentTag> 
     }
 
     private List<ContentTag> findByContentId(String contentId, boolean withDeleted) {
+        Objects.requireNonNull(contentId, "content id can not be null.");
         Condition condition = new Condition(ContentTag.class);
         condition.createCriteria()
                 .andEqualTo("contentId", contentId);

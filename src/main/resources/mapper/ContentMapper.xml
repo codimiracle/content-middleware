@@ -65,6 +65,11 @@
 
     <select id="selectAllIntegrally" resultMap="ValueResultMap">
         <include refid="select_statement" />
+        <if test="filter != null">
+            <if test="filter.type != null and filter.type.length gt 0">
+                AND c.type = #{filter.type[0]}
+            </if>
+        </if>
     </select>
 
 </mapper>
