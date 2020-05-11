@@ -6,6 +6,7 @@ import com.codimiracle.web.middleware.content.pojo.eo.Tag;
 import com.codimiracle.web.middleware.content.pojo.po.ContentTag;
 import com.codimiracle.web.middleware.content.service.ContentTagsService;
 import com.codimiracle.web.mybatis.contract.AbstractService;
+import com.codimiracle.web.mybatis.contract.ServiceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,9 @@ public class ContentTagsServiceImpl extends AbstractService<String, ContentTag> 
                     return contentTag;
                 }
         ));
+        if (needToAttachTags.containsKey(null)) {
+            throw new ServiceException("Each tag must have there tag id");
+        }
         // exists attached tags
         List<ContentTag> attachedTags = findByContentIdWithDeleted(contentId);
         // process attached tags

@@ -23,7 +23,7 @@ class ContentServiceImplTest {
     private ContentService contentService;
 
     @Test
-    void deleteLogic() {
+    void deleteLogically() {
         Content content = new Content();
         content.setType("test-content");
         contentService.save(content);
@@ -91,10 +91,21 @@ class ContentServiceImplTest {
         content.setTagList(tagList);
         content.setType("test-content");
         contentService.save(content);
+        ContentVO result1 = contentService.findByIdIntegrally(content.getId());
+        assertTrue(!result1.getTagList().isEmpty());
+
+        // delete all tags
         tagList.clear();
         contentService.update(content);
-        ContentVO result = contentService.findByIdIntegrally(content.getId());
-        assertTrue(result.getTagList().isEmpty());
+        ContentVO result2 = contentService.findByIdIntegrally(content.getId());
+        assertTrue(result2.getTagList().isEmpty());
+
+        // add multi tags
+        tagList.add(new SimpleTag("2", "Hello1"));
+        tagList.add(new SimpleTag("3", "Hello2"));
+        contentService.update(content);
+        ContentVO result3 = contentService.findByIdIntegrally(content.getId());
+        assertEquals(2, result3.getTagList().size());
     }
 
 
